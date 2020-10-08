@@ -19,7 +19,7 @@ function eventListeners(){
 
 function agregarTweets(e){
     e.preventDefault();
-    console.log('Agregar tweets');
+    // console.log('Agregar tweets');
 
     //Text Area donde se escribe el tweet
     const tweet = document.querySelector('#tweet').value;
@@ -67,11 +67,23 @@ function crearHTML(){
     limpiarHTML();
     if(tweets.length > 0){
         tweets.forEach((tweet)=>{
-            const li = document.createElement('li');
+            //Agregar botón
+            const btnEliminar = document.createElement('a');
+            btnEliminar.classList.add('borrar-tweet');
+            btnEliminar.innerText = 'X';
+            
+            btnEliminar.onclick = ()=>{
+                borrarTweet(tweet.id);
+            }
 
+
+            const li = document.createElement('li');
+            
             //Añadir al texto al html
             li.innerText = tweet.tweet;
 
+            //asignar un botón
+            li.appendChild(btnEliminar);
             listaTweets.appendChild(li);
         });
     }
@@ -82,6 +94,13 @@ function crearHTML(){
 //Agrega los tweets actuales a local storage
 function sincronizarStorage(){
     localStorage.setItem('tweets',JSON.stringify(tweets));
+}
+
+//Borrar tweet
+function borrarTweet(id){
+    tweets = tweets.filter(tweet=>tweet.id !== id) //me va a filtrar todos los tweets excepto el que le dimos click);
+    crearHTML();
+
 }
 
 //Función para limpiar el html
